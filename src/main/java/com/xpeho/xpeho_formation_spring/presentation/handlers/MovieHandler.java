@@ -28,6 +28,7 @@ public class MovieHandler implements MovieController {
     private final PutMovieUseCase putMovieUseCase;
     private final DeleteMovieUseCase deleteMovieUseCase;
     private final GetMovieByIdUseCase getMovieByIdUseCase;
+    private final SyncMoviesWithOmdbUseCase syncMoviesWithOmdbUseCase;
 
     /**
      * Constructor with dependency injection for all use cases.
@@ -38,19 +39,21 @@ public class MovieHandler implements MovieController {
      * @param putMovieUseCase use case for updating movies
      * @param deleteMovieUseCase use case for deleting movies
      * @param getMovieByIdUseCase use case for retrieving a movie by ID
+     * @param syncMoviesWithOmdbUseCase use case for synchronizing movies with OMDb API
      */
-    public MovieHandler(GetAllMoviesUseCase getAllMoviesUseCase, CreateMovieUseCase createMovieUseCase, GetAllMoviesByTitleUseCase getAllMoviesByTitleUseCase, PutMovieUseCase putMovieUseCase, DeleteMovieUseCase deleteMovieUseCase, GetMovieByIdUseCase getMovieByIdUseCase) {
+    public MovieHandler(GetAllMoviesUseCase getAllMoviesUseCase, CreateMovieUseCase createMovieUseCase, GetAllMoviesByTitleUseCase getAllMoviesByTitleUseCase, PutMovieUseCase putMovieUseCase, DeleteMovieUseCase deleteMovieUseCase, GetMovieByIdUseCase getMovieByIdUseCase, SyncMoviesWithOmdbUseCase syncMoviesWithOmdbUseCase) {
         this.getAllMoviesUseCase = getAllMoviesUseCase;
         this.createMovieUseCase = createMovieUseCase;
         this.getAllMoviesByTitleUseCase = getAllMoviesByTitleUseCase;
         this.putMovieUseCase = putMovieUseCase;
         this.deleteMovieUseCase = deleteMovieUseCase;
         this.getMovieByIdUseCase = getMovieByIdUseCase;
+        this.syncMoviesWithOmdbUseCase = syncMoviesWithOmdbUseCase;
     }
 
     /**
      * Handles GET /movies request.
-     * Delegates to GetAllMoviesUseCase.
+     * Synchronizes movies from OMDb API and returns all available movies.
      *
      * @return a list of all MovieEntity objects
      */
@@ -85,13 +88,20 @@ public class MovieHandler implements MovieController {
 
     /**
      * Handles GET /movies/search?title=... request.
-     * Delegates to GetAllMoviesByTitleUseCase.
+     * Synchronizes movies from OMDb API and searches locally.
      *
      * @param title the title text to search for
      * @return a list of MovieEntity objects matching the search criteria
      */
     @Override
     public List<MovieEntity> searchMoviesByTitle(String title) {
+        try {
+            // First sync with OMDb using the search title
+            syncMoviesWithOmdbUseCase.execute(title);
+        } catch (Exception e) {
+            // Continue with local search even if OMDb sync fails
+        }
+        // Then search in local database
         return getAllMoviesByTitleUseCase.execute(title);
     }
 
