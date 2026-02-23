@@ -1,5 +1,5 @@
 create table if not exists MOVIE (
-    id int auto_increment primary key,
+    id SERIAL primary key,
     title varchar(255) not null,
     "year" varchar(4),
     "imdb_id" varchar(50),
