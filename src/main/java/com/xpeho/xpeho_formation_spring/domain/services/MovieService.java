@@ -14,6 +14,8 @@ public interface MovieService {
 
     Iterable<Movie> searchByTitle(String title);
 
+    void putMovie(Integer id);
+
     void deleteMovie(Integer id);
 
 }

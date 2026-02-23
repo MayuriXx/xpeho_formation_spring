@@ -1,6 +1,5 @@
 # XPEHO Formation Spring - Documentation
 
-## 📋 Vue d'ensemble
 
 XPEHO Formation Spring est une application REST API construite avec **Spring Boot 4.0.2** et **Java 25**, permettant de gérer une collection de films avec les opérations CRUD complètes.
 

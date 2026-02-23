@@ -46,5 +46,10 @@ public class MovieServiceImpl implements MovieService {
         repository.deleteById(id);
     }
 
+    @Override
+    public void putMovie(Integer id) {
+        repository.deleteById(id);
+    }
+
 }
 
