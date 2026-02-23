@@ -1,10 +1,11 @@
-package com.xpeho.xpeho_formation_spring.domain.services;
+package com.xpeho.xpeho_formation_spring.data.services;
 
 import com.xpeho.xpeho_formation_spring.data.converters.MovieConverter;
 import com.xpeho.xpeho_formation_spring.data.models.Movie;
 import com.xpeho.xpeho_formation_spring.data.sources.MovieRepository;
 import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
 import com.xpeho.xpeho_formation_spring.domain.entities.CreateMovieRequest;
+import com.xpeho.xpeho_formation_spring.domain.services.MovieService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
