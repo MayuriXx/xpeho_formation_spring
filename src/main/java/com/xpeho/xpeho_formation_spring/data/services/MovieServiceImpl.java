@@ -3,8 +3,9 @@ package com.xpeho.xpeho_formation_spring.data.services;
 import com.xpeho.xpeho_formation_spring.data.converters.MovieConverter;
 import com.xpeho.xpeho_formation_spring.data.models.Movie;
 import com.xpeho.xpeho_formation_spring.data.sources.MovieRepository;
-import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
 import com.xpeho.xpeho_formation_spring.domain.entities.CreateMovieRequest;
+import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
+import com.xpeho.xpeho_formation_spring.domain.entities.UpdateMovieRequest;
 import com.xpeho.xpeho_formation_spring.domain.services.MovieService;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,28 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void putMovie(Integer id) {
-        repository.deleteById(id);
+    public MovieEntity getMovieById(Integer id) {
+        return repository.findById(id)
+                .map(converter::modelToEntity)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+    }
+
+    @Override
+    public MovieEntity putMovie(Integer id, UpdateMovieRequest request) {
+        var existingMovie = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+
+        var updatedMovie = new Movie(
+                existingMovie.id(),
+                request.title(),
+                request.year(),
+                request.imdbId(),
+                request.type(),
+                request.poster()
+        );
+
+        var savedMovie = repository.save(updatedMovie);
+        return converter.modelToEntity(savedMovie);
     }
 
 }

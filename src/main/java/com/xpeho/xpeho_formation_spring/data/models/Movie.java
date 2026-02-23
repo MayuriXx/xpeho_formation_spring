@@ -6,12 +6,12 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table("MOVIE")
 public record Movie(
-    @Id int id,
-    String title,
-    @Column("year") String year,
-    @Column("imdb_id") String imdbId,
-    @Column("type") String type,
-    String poster
+        @Id int id,
+        String title,
+        @Column("year") String year,
+        @Column("imdb_id") String imdbId,
+        @Column("type") String type,
+        String poster
 ) {
 }
 

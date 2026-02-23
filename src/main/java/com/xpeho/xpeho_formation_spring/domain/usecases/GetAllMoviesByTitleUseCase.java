@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Service
-public class SearchMoviesUseCase {
+public class GetAllMoviesByTitleUseCase {
 
     private final MovieService service;
     private final MovieConverter converter;
 
-    public SearchMoviesUseCase(MovieService service, MovieConverter converter) {
+    public GetAllMoviesByTitleUseCase(MovieService service, MovieConverter converter) {
         this.service = service;
         this.converter = converter;
     }

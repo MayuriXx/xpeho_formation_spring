@@ -1,7 +1,8 @@
 package com.xpeho.xpeho_formation_spring.presentation.handlers;
 
-import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
 import com.xpeho.xpeho_formation_spring.domain.entities.CreateMovieRequest;
+import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
+import com.xpeho.xpeho_formation_spring.domain.entities.UpdateMovieRequest;
 import com.xpeho.xpeho_formation_spring.domain.usecases.*;
 import com.xpeho.xpeho_formation_spring.presentation.controllers.MovieController;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,23 +12,25 @@ import java.util.List;
 @RestController
 public class MovieHandler implements MovieController {
 
-    private final ListMoviesUseCase listMoviesUseCase;
+    private final GetAllMoviesUseCase getAllMoviesUseCase;
     private final CreateMovieUseCase createMovieUseCase;
-    private final SearchMoviesUseCase searchMoviesUseCase;
+    private final GetAllMoviesByTitleUseCase getAllMoviesByTitleUseCase;
     private final PutMovieUseCase putMovieUseCase;
     private final DeleteMovieUseCase deleteMovieUseCase;
+    private final GetMovieByIdUseCase getMovieByIdUseCase;
 
-    public MovieHandler(ListMoviesUseCase listMoviesUseCase, CreateMovieUseCase createMovieUseCase, SearchMoviesUseCase searchMoviesUseCase, PutMovieUseCase putMovieUseCase, DeleteMovieUseCase deleteMovieUseCase) {
-        this.listMoviesUseCase = listMoviesUseCase;
+    public MovieHandler(GetAllMoviesUseCase getAllMoviesUseCase, CreateMovieUseCase createMovieUseCase, GetAllMoviesByTitleUseCase getAllMoviesByTitleUseCase, PutMovieUseCase putMovieUseCase, DeleteMovieUseCase deleteMovieUseCase, GetMovieByIdUseCase getMovieByIdUseCase) {
+        this.getAllMoviesUseCase = getAllMoviesUseCase;
         this.createMovieUseCase = createMovieUseCase;
-        this.searchMoviesUseCase = searchMoviesUseCase;
+        this.getAllMoviesByTitleUseCase = getAllMoviesByTitleUseCase;
         this.putMovieUseCase = putMovieUseCase;
         this.deleteMovieUseCase = deleteMovieUseCase;
+        this.getMovieByIdUseCase = getMovieByIdUseCase;
     }
 
     @Override
     public List<MovieEntity> getAllMovies() {
-        return listMoviesUseCase.execute();
+        return getAllMoviesUseCase.execute();
     }
 
     @Override
@@ -36,8 +39,13 @@ public class MovieHandler implements MovieController {
     }
 
     @Override
+    public MovieEntity getMovieById(Integer id) {
+        return getMovieByIdUseCase.execute(id);
+    }
+
+    @Override
     public List<MovieEntity> searchMoviesByTitle(String title) {
-        return searchMoviesUseCase.execute(title);
+        return getAllMoviesByTitleUseCase.execute(title);
     }
 
     @Override
@@ -46,8 +54,8 @@ public class MovieHandler implements MovieController {
     }
 
     @Override
-    public void putMovie(Integer id) {
-        putMovieUseCase.execute(id);
+    public MovieEntity putMovie(Integer id, UpdateMovieRequest request) {
+        return putMovieUseCase.execute(id, request);
     }
 
 }

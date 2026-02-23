@@ -1,12 +1,14 @@
 package com.xpeho.xpeho_formation_spring.presentation.controllers;
 
-import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
 import com.xpeho.xpeho_formation_spring.domain.entities.CreateMovieRequest;
+import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
+import com.xpeho.xpeho_formation_spring.domain.entities.UpdateMovieRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RequestMapping("/movies")
 public interface MovieController {
 
@@ -40,6 +42,21 @@ public interface MovieController {
     )
     MovieEntity createMovie(@RequestBody CreateMovieRequest request);
 
+    @GetMapping(value = "{id}", produces = "application/json")
+    @Operation(
+            summary = "Get movie by id",
+            description = "Get movie by id",
+            tags = {"movies"},
+            operationId = "getMovieById",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Get movie by id"
+                    )
+            }
+    )
+    MovieEntity getMovieById(@PathVariable Integer id);
+
     @GetMapping(value = "/search", produces = "application/json")
     @Operation(
             summary = "Search movies by title",
@@ -70,7 +87,7 @@ public interface MovieController {
     )
     void deleteMovie(@PathVariable Integer id);
 
-    @PutMapping(path = "/{id}",consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     @Operation(
             summary = "Update a new movie",
             description = "Update a new movie",
@@ -78,11 +95,11 @@ public interface MovieController {
             operationId = "putMovie",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
-                            responseCode = "201",
+                            responseCode = "200",
                             description = "Movie updated successfully"
                     )
             }
     )
-    void putMovie(@PathVariable Integer id);
+    MovieEntity putMovie(@PathVariable Integer id, @RequestBody UpdateMovieRequest request);
 }
 

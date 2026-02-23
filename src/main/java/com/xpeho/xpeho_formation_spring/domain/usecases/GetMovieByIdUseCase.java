@@ -4,19 +4,17 @@ import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
 import com.xpeho.xpeho_formation_spring.domain.services.MovieService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class ListMoviesUseCase {
+public class GetMovieByIdUseCase {
 
     private final MovieService service;
 
-    public ListMoviesUseCase(MovieService service) {
+    public GetMovieByIdUseCase(MovieService service) {
         this.service = service;
     }
 
-    public List<MovieEntity> execute() {
-        return service.listMovies();
+    public MovieEntity execute(Integer id) {
+        return service.getMovieById(id);
     }
 }
 
