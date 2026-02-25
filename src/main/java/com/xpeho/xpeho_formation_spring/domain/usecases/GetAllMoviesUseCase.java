@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Use case for retrieving all movies.
- *
+ * <p>
  * This use case encapsulates the business logic for fetching all movies from the system.
  * It orchestrates the call to the service layer and returns the complete movie list.
  *

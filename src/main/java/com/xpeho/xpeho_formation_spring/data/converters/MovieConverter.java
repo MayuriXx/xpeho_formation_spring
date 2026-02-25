@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Converter for transforming between Movie and MovieEntity.
- *
+ * <p>
  * This service provides bidirectional conversion between the data layer model (Movie)
  * and the domain entity (MovieEntity). It acts as a bridge between the persistence
  * layer and the business logic layer, ensuring proper separation of concerns.

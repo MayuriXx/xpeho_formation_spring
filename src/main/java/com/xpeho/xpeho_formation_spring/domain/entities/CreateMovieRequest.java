@@ -2,7 +2,7 @@ package com.xpeho.xpeho_formation_spring.domain.entities;
 
 /**
  * DTO for creating a new movie.
- *
+ * <p>
  * This immutable record class captures the data required to create a new movie.
  * It is used as the request body in the movie creation endpoint and contains
  * all mandatory fields for a movie creation operation.

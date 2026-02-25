@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * Implementation of the MovieService.
- *
+ * <p>
  * This class manages all CRUD operations on movies.
  * It communicates with the database via MovieRepository
  * and performs conversions between models and entities.
@@ -31,7 +31,7 @@ public class MovieServiceImpl implements MovieService {
      * Constructor with dependency injection.
      *
      * @param repository the repository for accessing movie data
-     * @param converter the converter for transforming models
+     * @param converter  the converter for transforming models
      */
     public MovieServiceImpl(MovieRepository repository, MovieConverter converter) {
         this.repository = repository;
@@ -101,7 +101,7 @@ public class MovieServiceImpl implements MovieService {
     /**
      * Updates an existing movie with new data.
      *
-     * @param id the ID of the movie to update
+     * @param id      the ID of the movie to update
      * @param request the new movie data (UpdateMovieRequest)
      * @return the entity of the updated movie
      * @throws RuntimeException if the movie does not exist

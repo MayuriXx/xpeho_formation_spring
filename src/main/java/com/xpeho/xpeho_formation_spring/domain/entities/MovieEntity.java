@@ -2,7 +2,7 @@ package com.xpeho.xpeho_formation_spring.domain.entities;
 
 /**
  * Domain entity representing a movie in the business domain layer.
- *
+ * <p>
  * This immutable record class encapsulates the core movie information used throughout
  * the application domain logic. It is independent of any persistence mechanism and
  * represents the canonical movie representation for business operations.

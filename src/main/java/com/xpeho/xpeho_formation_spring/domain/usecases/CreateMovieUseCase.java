@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Use case for creating a new movie.
- *
+ * <p>
  * This use case encapsulates the business logic for creating a new movie in the system.
  * It validates the request and delegates the creation to the service layer.
  *

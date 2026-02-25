@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 /**
  * Repository interface for Movie data access.
- *
+ * <p>
  * This interface provides CRUD operations and custom queries for Movie entities.
  * It extends CrudRepository to inherit standard data access operations,
  * and defines custom finder methods for specific business requirements.

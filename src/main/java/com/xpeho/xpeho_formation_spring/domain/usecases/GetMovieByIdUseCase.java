@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Use case for retrieving a movie by its ID.
- *
+ * <p>
  * This use case encapsulates the business logic for fetching a specific movie
  * from the system using its unique identifier.
  *

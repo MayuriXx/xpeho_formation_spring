@@ -10,7 +10,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * Use case for searching movies by title.
- *
+ * <p>
  * This use case encapsulates the business logic for searching movies in the system
  * based on a partial title match (case-insensitive).
  *
@@ -25,7 +25,7 @@ public class GetAllMoviesByTitleUseCase {
     /**
      * Constructor with dependency injection.
      *
-     * @param service the movie service for search operations
+     * @param service   the movie service for search operations
      * @param converter the converter for transforming models to entities
      */
     public GetAllMoviesByTitleUseCase(MovieService service, MovieConverter converter) {

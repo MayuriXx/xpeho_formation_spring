@@ -3,18 +3,20 @@ package com.xpeho.xpeho_formation_spring.presentation.controllers;
 import com.xpeho.xpeho_formation_spring.domain.entities.CreateMovieRequest;
 import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
 import com.xpeho.xpeho_formation_spring.domain.entities.UpdateMovieRequest;
+import com.xpeho.xpeho_formation_spring.presentation.handlers.MovieHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * REST API controller interface for movie operations.
- *
+ * <p>
  * This interface defines all REST endpoints for managing movies in the system.
  * It specifies the API contract including HTTP methods, request/response formats,
  * and Swagger documentation for each endpoint.
- *
+ * <p>
  * All endpoints support cross-origin requests (CORS).
  *
  * @author XPEHO
@@ -136,7 +138,7 @@ public interface MovieController {
      * Updates an existing movie.
      * PUT /movies/{id}
      *
-     * @param id the unique identifier of the movie to update
+     * @param id      the unique identifier of the movie to update
      * @param request the new movie data (request body)
      * @return the updated MovieEntity
      */
@@ -154,4 +156,27 @@ public interface MovieController {
             }
     )
     MovieEntity putMovie(@PathVariable Integer id, @RequestBody UpdateMovieRequest request);
+
+    /**
+     * Synchronizes movies from OMDb API into the database.
+     * POST /movies/sync?title=...&page=...
+     *
+     * @param title the title to search for in OMDb API
+     * @param page  the page number (default: 1)
+     * @return a list of all MovieEntity objects after synchronization
+     */
+    @PostMapping(value = "/sync", produces = "application/json")
+    @Operation(
+            summary = "Sync movies from OMDb API",
+            description = "Fetch movies from OMDb API and save them into the database",
+            tags = {"movies"},
+            operationId = "syncMoviesWithOmdb",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Movies synchronized successfully"
+                    )
+            }
+    )
+    List<MovieEntity> syncMoviesWithOmdb(@RequestParam String title, @RequestParam(defaultValue = "1") int page) throws IOException;
 }

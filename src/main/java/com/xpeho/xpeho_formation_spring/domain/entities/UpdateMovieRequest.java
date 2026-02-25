@@ -2,7 +2,7 @@ package com.xpeho.xpeho_formation_spring.domain.entities;
 
 /**
  * DTO for updating an existing movie.
- *
+ * <p>
  * This immutable record class captures the data required to update a movie.
  * It is used as the request body in the movie update endpoint and contains
  * all fields that can be modified in an update operation.

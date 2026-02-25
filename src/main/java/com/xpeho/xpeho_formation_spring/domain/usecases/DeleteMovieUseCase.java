@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Use case for deleting a movie.
- *
+ * <p>
  * This use case encapsulates the business logic for removing a movie from the system.
  * It delegates the deletion operation to the service layer.
  *

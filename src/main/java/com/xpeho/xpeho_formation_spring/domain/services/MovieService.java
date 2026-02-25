@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Interface defining the contract for movie business operations.
- *
+ * <p>
  * This service interface specifies all business logic methods for managing movies.
  * Implementations are responsible for coordinating with the data layer and
  * ensuring business rules are applied to all operations.
@@ -45,7 +45,7 @@ public interface MovieService {
     /**
      * Updates an existing movie with new data.
      *
-     * @param id the ID of the movie to update
+     * @param id      the ID of the movie to update
      * @param request the new movie data
      * @return the updated MovieEntity
      */

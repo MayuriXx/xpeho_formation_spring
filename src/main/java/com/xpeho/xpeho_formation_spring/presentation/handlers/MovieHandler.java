@@ -7,11 +7,12 @@ import com.xpeho.xpeho_formation_spring.domain.usecases.*;
 import com.xpeho.xpeho_formation_spring.presentation.controllers.MovieController;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Handler implementing the MovieController interface.
- *
+ * <p>
  * This class acts as the presentation layer handler that receives HTTP requests,
  * delegates them to the appropriate use cases, and returns the responses.
  * It implements the MovieController interface and routes all requests to the
@@ -33,13 +34,13 @@ public class MovieHandler implements MovieController {
     /**
      * Constructor with dependency injection for all use cases.
      *
-     * @param getAllMoviesUseCase use case for retrieving all movies
-     * @param createMovieUseCase use case for creating movies
+     * @param getAllMoviesUseCase        use case for retrieving all movies
+     * @param createMovieUseCase         use case for creating movies
      * @param getAllMoviesByTitleUseCase use case for searching movies by title
-     * @param putMovieUseCase use case for updating movies
-     * @param deleteMovieUseCase use case for deleting movies
-     * @param getMovieByIdUseCase use case for retrieving a movie by ID
-     * @param syncMoviesWithOmdbUseCase use case for synchronizing movies with OMDb API
+     * @param putMovieUseCase            use case for updating movies
+     * @param deleteMovieUseCase         use case for deleting movies
+     * @param getMovieByIdUseCase        use case for retrieving a movie by ID
+     * @param syncMoviesWithOmdbUseCase  use case for synchronizing movies with OMDb API
      */
     public MovieHandler(GetAllMoviesUseCase getAllMoviesUseCase, CreateMovieUseCase createMovieUseCase, GetAllMoviesByTitleUseCase getAllMoviesByTitleUseCase, PutMovieUseCase putMovieUseCase, DeleteMovieUseCase deleteMovieUseCase, GetMovieByIdUseCase getMovieByIdUseCase, SyncMoviesWithOmdbUseCase syncMoviesWithOmdbUseCase) {
         this.getAllMoviesUseCase = getAllMoviesUseCase;
@@ -97,7 +98,7 @@ public class MovieHandler implements MovieController {
     public List<MovieEntity> searchMoviesByTitle(String title) {
         try {
             // First sync with OMDb using the search title
-            syncMoviesWithOmdbUseCase.execute(title);
+            syncMoviesWithOmdbUseCase.execute(title, 1);
         } catch (Exception e) {
             // Continue with local search even if OMDb sync fails
         }
@@ -120,13 +121,26 @@ public class MovieHandler implements MovieController {
      * Handles PUT /movies/{id} request.
      * Delegates to PutMovieUseCase.
      *
-     * @param id the unique identifier of the movie to update
+     * @param id      the unique identifier of the movie to update
      * @param request the new movie data
      * @return the updated MovieEntity
      */
     @Override
     public MovieEntity putMovie(Integer id, UpdateMovieRequest request) {
         return putMovieUseCase.execute(id, request);
+    }
+
+    /**
+     * Handles POST /movies/sync request.
+     * Fetches movies from OMDb API and saves them into the database.
+     *
+     * @param title the title to search for in OMDb API
+     * @param page  the page number to fetch
+     * @return a list of all MovieEntity objects after synchronization
+     */
+    @Override
+    public List<MovieEntity> syncMoviesWithOmdb(String title, int page) throws IOException {
+        return syncMoviesWithOmdbUseCase.execute(title, page);
     }
 
 }

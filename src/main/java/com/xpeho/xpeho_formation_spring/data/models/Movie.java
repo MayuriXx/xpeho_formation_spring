@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * Data model representing a movie entity in the database.
- *
+ * <p>
  * This immutable record class maps directly to the MOVIE table in the database.
  * It serves as the data transfer object between the database layer and the application logic.
  *

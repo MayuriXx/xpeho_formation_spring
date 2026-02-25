@@ -1,4 +1,4 @@
-drop table "MOVIE" if exists;
+DROP TABLE IF EXISTS "MOVIE";
 
 create table if not exists "MOVIE" (
     "id" SERIAL primary key,

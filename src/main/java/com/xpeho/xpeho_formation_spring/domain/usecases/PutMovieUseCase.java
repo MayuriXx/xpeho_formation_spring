@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Use case for updating an existing movie.
- *
+ * <p>
  * This use case encapsulates the business logic for updating a movie in the system.
  * It validates the request and delegates the update operation to the service layer.
  *
@@ -30,7 +30,7 @@ public class PutMovieUseCase {
     /**
      * Executes the use case to update a movie.
      *
-     * @param id the unique identifier of the movie to update
+     * @param id      the unique identifier of the movie to update
      * @param request the new movie data (UpdateMovieRequest)
      * @return the updated MovieEntity
      */
