@@ -271,6 +271,18 @@ public record MovieEntity(
 - Java 25 installé
 - Maven 3.9.12 ou supérieur
 
+### Variables d'environnement
+
+Copier le fichier template et renseigner les valeurs :
+
+```bash
+cp .env.template .env
+```
+
+| Variable       | Description              | Obligatoire |
+|----------------|--------------------------|-------------|
+| `OMDB_API_KEY` | Clé API OMDb ([obtenir une clé](https://www.omdbapi.com/apikey.aspx)) | ✅ |
+
 ### Commandes
 
 ```bash
