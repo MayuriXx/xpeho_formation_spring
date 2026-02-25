@@ -1,3 +1,5 @@
+drop table "MOVIE" if exists;
+
 create table if not exists "MOVIE" (
     "id" SERIAL primary key,
     "title" varchar(255) not null,
