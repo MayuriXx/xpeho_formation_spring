@@ -13,11 +13,16 @@ import java.util.List;
 /**
  * Use case for synchronizing movies from OMDb API to the database.
  * <p>
- * This use case orchestrates the retrieval of movies from the external OMDb API,
- * filters out movies that already exist in the database, saves new movies,
- * and returns the complete list of movies.
+ * This use case orchestrates the retrieval of movies from the external OMDb API
+ * for a given title and page number, saves each new movie via {@link MovieService},
+ * and returns the complete list of movies stored in the database.
+ * <p>
+ * Duplicate movies (already existing in the database) are silently skipped
+ * to ensure idempotency of the synchronization.
  *
  * @author XPEHO
+ * @see com.xpeho.xpeho_formation_spring.data.services.OmdbApiClient
+ * @see MovieService
  */
 @Service
 public class SyncMoviesWithOmdbUseCase {
@@ -28,7 +33,7 @@ public class SyncMoviesWithOmdbUseCase {
     /**
      * Constructor with dependency injection.
      *
-     * @param omdbApiClient the OMDb API client for fetching movies
+     * @param omdbApiClient the OMDb API client for fetching movies from the external API
      * @param movieService  the movie service for database operations
      */
     public SyncMoviesWithOmdbUseCase(OmdbApiClient omdbApiClient, MovieService movieService) {
@@ -37,15 +42,16 @@ public class SyncMoviesWithOmdbUseCase {
     }
 
     /**
-     * Executes the use case to synchronize movies from OMDb API.
+     * Executes the synchronization of movies from OMDb API for the given title and page.
      * <p>
-     * Fetches movies from OMDb API by title, filters out duplicates already in the database,
-     * saves new movies, and returns all available movies.
+     * Fetches up to 10 movies per page from OMDb API, attempts to save each one
+     * into the database, and returns the full list of movies after synchronization.
+     * Movies that already exist or cause an error are skipped and logged to stderr.
      *
-     * @param title the title to search for in OMDb API
-     * @param page  the page number to fetch from OMDb API
-     * @return a list of MovieEntity objects representing all movies in the database
-     * @throws IOException if the OMDb API call fails
+     * @param title the title keyword to search for in OMDb API
+     * @param page  the page number to fetch from OMDb API (1-based, 10 results per page)
+     * @return the complete list of {@link MovieEntity} objects stored in the database
+     * @throws IOException if the HTTP call to the OMDb API fails
      */
     public List<MovieEntity> execute(String title, int page) throws IOException {
         var omdbResponse = omdbApiClient.searchMovies(title, page);
@@ -66,10 +72,10 @@ public class SyncMoviesWithOmdbUseCase {
     }
 
     /**
-     * Converts an OMDb movie to a CreateMovieRequest.
+     * Converts an {@link OmdbMovie} from the OMDb API response into a {@link CreateMovieRequest}.
      *
-     * @param omdbMovie the OMDb movie to convert
-     * @return a CreateMovieRequest object
+     * @param omdbMovie the OMDb movie object to convert
+     * @return a {@link CreateMovieRequest} populated with the OMDb movie data
      */
     private CreateMovieRequest convertOmdbMovieToRequest(OmdbMovie omdbMovie) {
         return new CreateMovieRequest(
@@ -81,4 +87,3 @@ public class SyncMoviesWithOmdbUseCase {
         );
     }
 }
-

@@ -15,10 +15,12 @@ import java.util.List;
  * <p>
  * This class acts as the presentation layer handler that receives HTTP requests,
  * delegates them to the appropriate use cases, and returns the responses.
- * It implements the MovieController interface and routes all requests to the
- * corresponding domain use cases.
+ * <p>
+ * It implements the {@link MovieController} interface and routes each request
+ * to its corresponding domain use case.
  *
  * @author XPEHO
+ * @see MovieController
  */
 @RestController
 public class MovieHandler implements MovieController {
@@ -54,9 +56,9 @@ public class MovieHandler implements MovieController {
 
     /**
      * Handles GET /movies request.
-     * Synchronizes movies from OMDb API and returns all available movies.
+     * Returns all movies stored in the database.
      *
-     * @return a list of all MovieEntity objects
+     * @return a list of all {@link MovieEntity} objects
      */
     @Override
     public List<MovieEntity> getAllMovies() {
@@ -65,10 +67,10 @@ public class MovieHandler implements MovieController {
 
     /**
      * Handles POST /movies request.
-     * Delegates to CreateMovieUseCase.
+     * Creates a new movie in the database.
      *
      * @param request the movie data to create
-     * @return the created MovieEntity
+     * @return the created {@link MovieEntity} with its generated ID
      */
     @Override
     public MovieEntity createMovie(CreateMovieRequest request) {
@@ -77,10 +79,10 @@ public class MovieHandler implements MovieController {
 
     /**
      * Handles GET /movies/{id} request.
-     * Delegates to GetMovieByIdUseCase.
+     * Returns the movie matching the given ID.
      *
      * @param id the unique identifier of the movie
-     * @return the MovieEntity with the specified ID
+     * @return the {@link MovieEntity} with the specified ID
      */
     @Override
     public MovieEntity getMovieById(Integer id) {
@@ -89,10 +91,13 @@ public class MovieHandler implements MovieController {
 
     /**
      * Handles GET /movies/search?title=... request.
-     * Synchronizes movies from OMDb API and searches locally.
+     * <p>
+     * First synchronizes page 1 of OMDb API results for the given title to enrich
+     * the local database, then searches and returns matching movies locally.
+     * If the OMDb sync fails, the local search still proceeds normally.
      *
-     * @param title the title text to search for
-     * @return a list of MovieEntity objects matching the search criteria
+     * @param title the title text to search for (partial, case-insensitive match)
+     * @return a list of {@link MovieEntity} objects matching the search criteria
      */
     @Override
     public List<MovieEntity> searchMoviesByTitle(String title) {
@@ -108,7 +113,7 @@ public class MovieHandler implements MovieController {
 
     /**
      * Handles DELETE /movies/{id} request.
-     * Delegates to DeleteMovieUseCase.
+     * Deletes the movie matching the given ID from the database.
      *
      * @param id the unique identifier of the movie to delete
      */
@@ -119,11 +124,11 @@ public class MovieHandler implements MovieController {
 
     /**
      * Handles PUT /movies/{id} request.
-     * Delegates to PutMovieUseCase.
+     * Updates the movie matching the given ID with the provided data.
      *
      * @param id      the unique identifier of the movie to update
      * @param request the new movie data
-     * @return the updated MovieEntity
+     * @return the updated {@link MovieEntity}
      */
     @Override
     public MovieEntity putMovie(Integer id, UpdateMovieRequest request) {
@@ -131,12 +136,16 @@ public class MovieHandler implements MovieController {
     }
 
     /**
-     * Handles POST /movies/sync request.
-     * Fetches movies from OMDb API and saves them into the database.
+     * Handles POST /movies/sync?title=...&page=... request.
+     * <p>
+     * Delegates to {@link SyncMoviesWithOmdbUseCase} which fetches movies from
+     * the OMDb API for the given title and page, saves new ones into the database,
+     * and returns the full list of movies stored locally.
      *
-     * @param title the title to search for in OMDb API
-     * @param page  the page number to fetch
-     * @return a list of all MovieEntity objects after synchronization
+     * @param title the title keyword to search for in OMDb API
+     * @param page  the page number to fetch (1-based, 10 results per page)
+     * @return the complete list of {@link MovieEntity} objects after synchronization
+     * @throws IOException if the HTTP call to the OMDb API fails
      */
     @Override
     public List<MovieEntity> syncMoviesWithOmdb(String title, int page) throws IOException {

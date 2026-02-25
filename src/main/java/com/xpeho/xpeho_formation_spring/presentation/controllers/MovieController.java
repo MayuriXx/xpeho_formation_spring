@@ -15,12 +15,13 @@ import java.util.List;
  * <p>
  * This interface defines all REST endpoints for managing movies in the system.
  * It specifies the API contract including HTTP methods, request/response formats,
- * and Swagger documentation for each endpoint.
+ * and Swagger/OpenAPI documentation for each endpoint.
  * <p>
- * All endpoints support cross-origin requests (CORS).
+ * All endpoints support cross-origin requests (CORS) and are prefixed with {@code /movies}.
+ * The interface is implemented by {@link com.xpeho.xpeho_formation_spring.presentation.handlers.MovieHandler}.
  *
  * @author XPEHO
- * @see MovieHandler
+ * @see com.xpeho.xpeho_formation_spring.presentation.handlers.MovieHandler
  */
 @CrossOrigin
 @RequestMapping("/movies")
@@ -36,7 +37,7 @@ public interface MovieController {
     @Operation(
             summary = "Get all movies",
             description = "Get all movies",
-            tags = {"movies"},
+            tags = {"BDD"},
             operationId = "getAllMovies",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -58,7 +59,7 @@ public interface MovieController {
     @Operation(
             summary = "Create a new movie",
             description = "Create a new movie",
-            tags = {"movies"},
+            tags = {"BDD"},
             operationId = "createMovie",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -80,7 +81,7 @@ public interface MovieController {
     @Operation(
             summary = "Get movie by id",
             description = "Get movie by id",
-            tags = {"movies"},
+            tags = {"BDD"},
             operationId = "getMovieById",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -102,7 +103,7 @@ public interface MovieController {
     @Operation(
             summary = "Search movies by title",
             description = "Search movies by title",
-            tags = {"movies"},
+            tags = {"BDD"},
             operationId = "searchMoviesByTitle",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -123,7 +124,7 @@ public interface MovieController {
     @Operation(
             summary = "Delete a movie",
             description = "Delete a movie by ID",
-            tags = {"movies"},
+            tags = {"BDD"},
             operationId = "deleteMovie",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -146,7 +147,7 @@ public interface MovieController {
     @Operation(
             summary = "Update a new movie",
             description = "Update a new movie",
-            tags = {"movies"},
+            tags = {"BDD"},
             operationId = "putMovie",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -158,18 +159,23 @@ public interface MovieController {
     MovieEntity putMovie(@PathVariable Integer id, @RequestBody UpdateMovieRequest request);
 
     /**
-     * Synchronizes movies from OMDb API into the database.
+     * Synchronizes movies from OMDb API into the local database.
      * POST /movies/sync?title=...&page=...
+     * <p>
+     * Calls the OMDb API with the given title and page number, saves new movies
+     * into the database (duplicates are skipped), and returns the full list of
+     * movies stored locally after synchronization.
      *
-     * @param title the title to search for in OMDb API
-     * @param page  the page number (default: 1)
-     * @return a list of all MovieEntity objects after synchronization
+     * @param title the title keyword to search for in OMDb API
+     * @param page  the page number to fetch (1-based, 10 results per page, default: 1)
+     * @return the complete list of {@link MovieEntity} objects after synchronization
+     * @throws IOException if the HTTP call to the OMDb API fails
      */
     @PostMapping(value = "/sync", produces = "application/json")
     @Operation(
             summary = "Sync movies from OMDb API",
-            description = "Fetch movies from OMDb API and save them into the database",
-            tags = {"movies"},
+            description = "Fetch movies from OMDb API by title and page, save new ones into the database and return the full list",
+            tags = {"OMDB"},
             operationId = "syncMoviesWithOmdb",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
