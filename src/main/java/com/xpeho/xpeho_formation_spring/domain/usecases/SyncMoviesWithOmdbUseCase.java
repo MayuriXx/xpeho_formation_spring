@@ -4,6 +4,7 @@ import com.xpeho.xpeho_formation_spring.data.models.OmdbMovie;
 import com.xpeho.xpeho_formation_spring.data.services.OmdbApiClient;
 import com.xpeho.xpeho_formation_spring.domain.entities.CreateMovieRequest;
 import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
+import com.xpeho.xpeho_formation_spring.domain.errors.OmdbApiException;
 import com.xpeho.xpeho_formation_spring.domain.services.MovieService;
 import org.springframework.stereotype.Service;
 

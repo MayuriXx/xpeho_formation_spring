@@ -6,6 +6,7 @@ import com.xpeho.xpeho_formation_spring.data.sources.MovieRepository;
 import com.xpeho.xpeho_formation_spring.domain.entities.CreateMovieRequest;
 import com.xpeho.xpeho_formation_spring.domain.entities.MovieEntity;
 import com.xpeho.xpeho_formation_spring.domain.entities.UpdateMovieRequest;
+import com.xpeho.xpeho_formation_spring.domain.errors.MovieNotFoundException;
 import com.xpeho.xpeho_formation_spring.domain.services.MovieService;
 import org.springframework.stereotype.Service;
 
